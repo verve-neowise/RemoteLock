@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"
+        integrity="sha512-Xo0Jh8MsOn72LGV8kU5LsclG7SUzJsWGhXbWcYs2MAmChkQzwiW/yTQwdJ8w6UA9C6EVG18GHb/TrYpYCjyAQw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css"
+        integrity="sha512-KXol4x3sVoO+8ZsWPFI/r5KBVB/ssCGB5tsv2nVOKwLg33wTFP3fmnXa47FdSVIshVTgsYk/1734xSk9aFIa4A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Devices</title>
+</head>
+
+<body class="ui container">
+    <div style="display: flex; justify-content: space-between; padding: 20px;">
+        <h1 class="ui header">Lock Phone</h1>
+        <button class="ui button" onclick="$('.ui.modal').modal('show')">Add Device</button>
+    </div>
+    <div class="ui divider"></div>
+
+    <% if (error) { %>
+        <div class="ui error message">
+            <i class="close icon"></i>
+            <div class="header">
+                There were some errors with your submission
+            </div>
+            <p>
+                <% error %>
+            </p>
+        </div>
+        <% } %>
+
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>DeviceID</th>
+                        <th>Model</th>
+                        <th>Status</th>
+                        <th>Last Sync</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<devices.length;i++) {%>
+                        <% var device=devices[i]%>
+                            <tr>
+                                <td data-label="#">
+                                    <%=i + 1%>
+                                </td>
+                                <td data-label="DeviceID">
+                                    <%=device.deviceId%>
+                                </td>
+                                <td data-label="Model">
+                                    <%=device.model%>
+                                </td>
+                                <td data-label="Status">
+                                    <% if (device.status=='unlocked' ) { %>
+                                        <div class="ui green horizontal label">Unlocked</div>
+                                        <% } else if (device.status=='locked' ) { %>
+                                            <div class="ui red horizontal label">Locked</div>
+                                            <% } %>
+                                </td>
+                                <td data-label="Last Sync">
+                                    <%=moment(new Date(device.lastSync)).format('DD.MM.yyyy h:mm')%>
+                                </td>
+                                <td data-label="Actions">
+                                    <% if (device.status=='unlocked' ) { %>
+                                        <a href="/device/<%=device.id%>/lock" class="ui labeled icon red button">
+                                            <i class="lock icon"></i>
+                                            Lock
+                                        </a>
+                                        <% } else if (device.status=='locked' ) { %>
+                                            <a href="/device/<%=device.id%>/unlock"
+                                                class="ui labeled icon green button">
+                                                <i class="unlock icon"></i>
+                                                Unlock
+                                            </a>
+                                            <% } %>
+
+                                                <a href="/device/<%=device.id%>/delete" class="ui red icon button">
+                                                    <i class="trash alternate outline icon"></i>
+                                                </a>
+                                </td>
+                            </tr>
+                            <%} %>
+                </tbody>
+            </table>
+
+            <form action="/" method="post" class="ui form ui modal">
+                <i class="close icon"></i>
+                <div class="header">
+                    Add device
+                </div>
+                <div class="content">
+                    <div class="field">
+                        <label>DeviceID</label>
+                        <input type="text" name="deviceId" placeholder="Device ID">
+                    </div>
+                    <div class="field">
+                        <label>Model</label>
+                        <input type="text" name="model" placeholder="Model">
+                    </div>
+                    <div class="field">
+                        <label>Status</label>
+                        <select name="status" class="ui dropdown">
+                            <option value="locked">Locked</option>
+                            <option value="unlocked">Unlocked</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="ui green button" type="submit">Create</button>
+                    <div class="ui black deny button">
+                        Nope
+                    </div>
+                </div>
+            </form>
+</body>
+
+</html>
