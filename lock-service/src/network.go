@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func listen(id string, model string, callback func(string, string, string) bool) {
+func listen(id string, model string, status string, callback func(string, string, string) bool) {
 
 	interval := 10 * time.Second
 	ticker := time.NewTicker(interval)
@@ -17,7 +17,7 @@ func listen(id string, model string, callback func(string, string, string) bool)
 		for {
 			select {
 			case <-ticker.C:
-				result := fetchAPI(id, model)
+				result := fetchAPI(id, model, status)
 				fmt.Printf("result: %s\n", result)
 
 				if callback(id, model, result) {
@@ -29,8 +29,8 @@ func listen(id string, model string, callback func(string, string, string) bool)
 	select {}
 }
 
-func fetchAPI(id string, model string) string {
-	httpRequest := "GET /device/status?id=" + id + "&model=" + model + " HTTP/1.0\r\n\r\n"
+func fetchAPI(id string, model string, status string) string {
+	httpRequest := "GET /device/status?id=" + id + "&model=" + model + "&status=" + status + " HTTP/1.0\r\n\r\n"
 
 	fmt.Println("Request: " + httpRequest)
 

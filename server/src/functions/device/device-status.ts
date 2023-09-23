@@ -4,11 +4,12 @@ import moment from "moment";
 
 export default async (req: Request, res: Response) => {
     try {
-        const { id, model } = req.query
+        const { id, model, status } = req.query
 
         const exists = await DeviceService.findByIdAndModel(String(id), String(model))
     
         if (!exists) {
+            console.log(`[${moment(new Date()).format('DD.MM.yyyy HH:mm:ss')}] Sync Unknow device  ${id} | ${model} | ${status}`);
             return res.send('Not found')
         }
         

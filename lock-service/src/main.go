@@ -37,12 +37,12 @@ func main() {
 
 func listenLock(id string, model string) {
 	fmt.Println("Listen to Lock")
-	listen(id, model, lock)
+	listen(id, model, "unlocked", lock)
 }
 
 func listenUnlock(id string, model string) {
 	fmt.Println("Listen to Unlock")
-	listen(id, model, unlock)
+	listen(id, model, "locked", unlock)
 }
 
 func lock(id string, model string, result string) bool {
