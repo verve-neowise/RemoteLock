@@ -135,7 +135,7 @@ func verify() (string) {
 }
 
 func fetchAPI(id string, model string) (string) {
-		httpRequest := "GET /status?id=" + id + "&model=" + model + " HTTP/1.0\r\n\r\n"
+		httpRequest := "GET /device/status?id=" + id + "&model=" + model + " HTTP/1.0\r\n\r\n"
 
 		fmt.Println("Request: " + httpRequest)
 
