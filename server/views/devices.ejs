@@ -38,6 +38,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Name</th>
                         <th>DeviceID</th>
                         <th>Model</th>
                         <th>Status</th>
@@ -51,6 +52,9 @@
                             <tr>
                                 <td data-label="#">
                                     <%=i + 1%>
+                                </td>
+                                <td data-label="Name">
+                                    <%=device.name%>
                                 </td>
                                 <td data-label="DeviceID">
                                     <%=device.deviceId%>
@@ -97,6 +101,10 @@
                     Add device
                 </div>
                 <div class="content">
+                    <div class="field">
+                        <label>Name</label>
+                        <input type="text" name="name" placeholder="Name">
+                    </div>
                     <div class="field">
                         <label>DeviceID</label>
                         <input type="text" name="deviceId" placeholder="Device ID">

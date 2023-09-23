@@ -1,5 +1,5 @@
-import getDevices from "./getDevices";
-import postDevice from "./postDevice";
+import getDevices from "./get-main";
+import postDevice from "../device/create-device";
 
 export {
     getDevices,

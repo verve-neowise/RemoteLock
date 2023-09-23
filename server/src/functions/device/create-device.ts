@@ -4,7 +4,7 @@ import DeviceService from "../../data/devices.service";
 export default async (req: Request, res: Response) => {
     try {
 
-        const { deviceId, model, status } = req.body
+        const { name, deviceId, model, status } = req.body
 
         const exists = await DeviceService.findById(deviceId)
 
@@ -14,6 +14,7 @@ export default async (req: Request, res: Response) => {
         }
 
         await DeviceService.create({
+            name: name,
             deviceId: deviceId,
             model: model,
             status: status

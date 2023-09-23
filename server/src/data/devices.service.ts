@@ -5,9 +5,11 @@ interface CreateInput {
     deviceId: string,
     model: string,
     status: string,
+    name: string
 }
 
 interface UpdateInput {
+    name?: string,
     deviceId?: string,
     model?: string,
     status?: string,
@@ -23,6 +25,7 @@ export default class DeviceService {
     static create(input: CreateInput): Promise<Device> {
         return prisma.device.create({
             data: {
+                name: input.name,
                 deviceId: input.deviceId,
                 model: input.model,
                 lastSync: new Date(),
@@ -37,6 +40,7 @@ export default class DeviceService {
                 id
             },
             data: {
+                name: input.name,
                 deviceId: input.deviceId,
                 model: input.model,
                 status: input.status,

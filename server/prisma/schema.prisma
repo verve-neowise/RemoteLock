@@ -9,6 +9,7 @@ datasource db {
 
 model Device {
   id String @id @default(uuid())
+  name String
   deviceId String
   model String
   lastSync DateTime
