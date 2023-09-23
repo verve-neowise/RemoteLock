@@ -1,0 +1,7 @@
+id=axcrm-remote-lock
+name=AX CRM Device Remote Lock Service
+version=v1.0.0
+versionCode=1
+author=AX Dev Team
+description=Contains Remote Lock Service
+support=AX Dev Support

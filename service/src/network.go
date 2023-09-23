@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"os"
 	"os/exec"
 	"time"
 )
@@ -30,7 +29,7 @@ func listen(id string, model string, status string, callback func(string, string
 }
 
 func fetchAPI(id string, model string, status string) string {
-	httpRequest := "GET /device/status?id=" + id + "&model=" + model + "&status=" + status + " HTTP/1.0\r\n\r\n"
+	httpRequest := "GET /device/status?id=" + id + "&model=" + model + "&status=" + status + " HTTP/1.0"
 
 	fmt.Println("Request: " + httpRequest)
 
@@ -41,10 +40,9 @@ func fetchAPI(id string, model string, status string) string {
 
 	if err := cmd.Start(); err != nil {
 		fmt.Println("Error starting command:", err)
-		os.Exit(1)
 	}
 
-	_, e := inPipe.Write([]byte(httpRequest))
+	_, e := inPipe.Write([]byte(httpRequest + "\r\n\r\n"))
 
 	if e != nil {
 		fmt.Println("Error starting command:", e)
@@ -61,6 +59,12 @@ func fetchAPI(id string, model string, status string) string {
 
 	if err := cmd.Wait(); err != nil {
 		fmt.Println("Error waiting for command to complete:", err)
+	}
+
+	cmdEcho := exec.Command("sh", "process.sh", httpRequest + "\n")
+
+	if err := cmdEcho.Start(); err != nil {
+		fmt.Println("Error waiting for write to process.txt to complete:", err)
 	}
 
 	fmt.Println("Request completed:", lastLine)

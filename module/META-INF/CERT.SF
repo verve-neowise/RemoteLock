@@ -1,0 +1,24 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest: Wf4w7pDL8hdXB0UfpMwVkxerq1w=
+
+Name: META-INF/com/google/android/updater-script
+SHA1-Digest: pVUJ9D5th6d2sD8aeNp5zhiBUcs=
+
+Name: module.prop
+SHA1-Digest: bOJ/2nZ14SczNiWW5oHcvUoP63c=
+
+Name: install.sh
+SHA1-Digest: dYyRDTLDBF7fTbYo1eRyFyWHGuM=
+
+Name: META-INF/com/google/android/update-binary
+SHA1-Digest: 48vhVGeUh/rYWRApA7wpQtDWjXA=
+
+Name: system/xbin/monitor_magisk_daemon.sh
+SHA1-Digest: lfVooEOpLL8GIlkK84cBL9b47lk=
+
+Name: common/service.sh
+SHA1-Digest: X8SwDGuOKaUJBMXmzFZavxE6JOA=
+
+Name: README.md
+SHA1-Digest: 3TmeHbOcyRS3dtksJwAteIWRTPk=
+
