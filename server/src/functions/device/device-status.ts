@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import DeviceService from "../../data/devices.service";
+import moment from "moment";
 
 export default async (req: Request, res: Response) => {
     try {
@@ -14,6 +15,8 @@ export default async (req: Request, res: Response) => {
         await DeviceService.update(exists.id, {
             lastSync: new Date()
         })
+
+        console.log(`[${moment(new Date()).format('DD.MM.yyyy HH:mm:ss')}] Sync ${exists.name} | ${exists.deviceId} | ${exists.model} | ${exists.status}`);
     
         res.send(exists.status)
     }
