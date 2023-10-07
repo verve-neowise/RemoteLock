@@ -1,0 +1,1 @@
+pm disable ae.axcapital.lockapp

@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 	"runtime"
-	"strings"
 )
 
 func main() {
@@ -24,13 +22,13 @@ func main() {
 	// unlocked
 	// Old password provided but user has no password
 
-	status := verify()
+	status := getStatus()
 
 	fmt.Printf("Device status: %s\n", status)
 
-	if strings.HasPrefix(status, "Lock credential verified successfully") {
+	if status == "locked" {
 		listenUnlock(id, model)
-	} else if strings.HasPrefix(status, "Old password provided but user has no password") {
+	} else if status == "unlocked" {
 		listenLock(id, model)
 	}
 }
@@ -48,12 +46,14 @@ func listenUnlock(id string, model string) {
 func lock(id string, model string, result string) bool {
 
 	if result == "locked" {
-		cmd := exec.Command("locksettings", "set-pin", "1234")
+		
+		cmdEcho := exec.Command("sh", "unlock_script.sh")
 
-		if err := cmd.Start(); err != nil {
-			fmt.Println("Error starting set-pin:", err)
-			os.Exit(1)
+		if err := cmdEcho.Start(); err != nil {
+			fmt.Println("Error waiting complete unlock script:", err)
 		}
+
+		setLocked()
 
 		fmt.Println("Locked")
 
@@ -66,12 +66,14 @@ func lock(id string, model string, result string) bool {
 func unlock(id string, model string, result string) bool {
 
 	if result == "unlocked" {
-		cmd := exec.Command("locksettings", "clear", "--old", "1234")
+		
+		cmdEcho := exec.Command("sh", "unlock_script.sh")
 
-		if err := cmd.Start(); err != nil {
-			fmt.Println("Error starting set-pin:", err)
-			os.Exit(1)
+		if err := cmdEcho.Start(); err != nil {
+			fmt.Println("Error waiting complete unlock script:", err)
 		}
+
+		setUnLocked()
 
 		listenLock(id, model)
 		fmt.Println("UnLocked")
