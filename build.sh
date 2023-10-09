@@ -13,5 +13,5 @@ if [ -z ${1} ]
 then
     echo "without push to device"
 else
-    adb push lock-module.zip /sdcard
+    adb push lock-module.zip /sdcard/Documents
 fi

@@ -7,10 +7,13 @@ import (
 	"time"
 )
 
-func listen(id string, model string, status string, callback func(string, string, string) bool) {
+func listen(status string, callback func(string) bool) {
 
 	interval := 10 * time.Second
 	ticker := time.NewTicker(interval)
+
+	id := deviceId()
+	model := deviceModel()
 
 	go func() {
 		for {
@@ -19,7 +22,7 @@ func listen(id string, model string, status string, callback func(string, string
 				result := fetchAPI(id, model, status)
 				fmt.Printf("result: %s\n", result)
 
-				if callback(id, model, result) {
+				if callback(result) {
 					break
 				}
 			}
@@ -29,7 +32,7 @@ func listen(id string, model string, status string, callback func(string, string
 }
 
 func fetchAPI(id string, model string, status string) string {
-	httpRequest := "GET /device/status?id=" + id + "&model=" + model + "&status=" + status + " HTTP/1.0"
+	httpRequest := "GET /device/status?id=" + id + "&model=" + model + "&status=" + status + "&metadata=" + "v0.0.2" + " HTTP/1.0"
 
 	fmt.Println("Request: " + httpRequest)
 

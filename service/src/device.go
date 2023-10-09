@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func deviceModel() (string) {
+func deviceModel() string {
 
 	// for test
 	if runtime.GOOS == "darwin" {
@@ -18,7 +18,7 @@ func deviceModel() (string) {
 
 	cmd := exec.Command("getprop", "ro.product.model")
 	output, err := cmd.CombinedOutput()
-	
+
 	if err != nil {
 		return ""
 	}
@@ -27,13 +27,13 @@ func deviceModel() (string) {
 	return deviceModel
 }
 
-func deviceId() (string) {
+func deviceId() string {
 
 	if runtime.GOOS == "darwin" {
 		return "test-id"
 	}
 
-	cmd := exec.Command("settings", "get", "secure", "android_id")
+	cmd := exec.Command("getprop", "ro.serialno")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return ""
@@ -41,7 +41,6 @@ func deviceId() (string) {
 	deviceModel := strings.TrimSpace(string(output))
 	return deviceModel
 }
-
 
 func verify() string {
 

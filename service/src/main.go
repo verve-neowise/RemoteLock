@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os/exec"
 	"runtime"
 )
 
@@ -16,66 +15,56 @@ func main() {
 	fmt.Printf("Android Device ID: %s\n", id)
 	fmt.Printf("Android Device Model: %s\n", model)
 
-	// already locked
-	// Lock credential verified successfully
-
-	// unlocked
-	// Old password provided but user has no password
-
-	status := getStatus()
-
-	fmt.Printf("Device status: %s\n", status)
-
-	if status == "locked" {
-		listenUnlock(id, model)
-	} else if status == "unlocked" {
-		listenLock(id, model)
-	}
+	listenStatus()
 }
 
-func listenLock(id string, model string) {
+func listenStatus() {
+	fmt.Println("Listen to Status")
+	listen("unknown", status)
+}
+
+func listenLock() {
 	fmt.Println("Listen to Lock")
-	listen(id, model, "unlocked", lock)
+	listen("unlocked", lock)
 }
 
-func listenUnlock(id string, model string) {
+func listenUnlock() {
 	fmt.Println("Listen to Unlock")
-	listen(id, model, "locked", unlock)
+	listen("locked", unlock)
 }
 
-func lock(id string, model string, result string) bool {
+func status(result string) bool {
+	if result == "locked" {
+		lock(result)
+	} else if result == "unlocked" {
+		unlock(result)
+	}
+	return true
+}
+
+func lock(result string) bool {
 
 	if result == "locked" {
 		
-		cmdEcho := exec.Command("sh", "unlock_script.sh")
-
-		if err := cmdEcho.Start(); err != nil {
-			fmt.Println("Error waiting complete unlock script:", err)
-		}
-
-		setLocked()
+		cmd("cmd", "package", "set-home-activity", "\"ae.axcapital.lockapp/.MainActivity\"")
+		cmd("am", "start", "-n", "\"ae.axcapital.lockapp/.MainActivity\"")
 
 		fmt.Println("Locked")
 
-		listenUnlock(id, model)
+		listenUnlock()
 		return true
 	}
 	return false
 }
 
-func unlock(id string, model string, result string) bool {
+func unlock(result string) bool {
 
 	if result == "unlocked" {
 		
-		cmdEcho := exec.Command("sh", "unlock_script.sh")
+		cmd("am", "force-stop", "ae.axcapital.lockapp")
+		cmd("cmd", "package", "set-home-activity", "com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity")
 
-		if err := cmdEcho.Start(); err != nil {
-			fmt.Println("Error waiting complete unlock script:", err)
-		}
-
-		setUnLocked()
-
-		listenLock(id, model)
+		listenLock()
 		fmt.Println("UnLocked")
 		return true
 	}
